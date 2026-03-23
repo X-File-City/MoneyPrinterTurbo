@@ -12,7 +12,7 @@
     {
       "id": "step-1-overview",
       "title": "Project Overview",
-      "description": "MoneyPrinterTurbo is an AI-powered platform that automatically generates short videos from a topic or keyword. It orchestrates large language models for scriptwriting, stock footage APIs for visuals, text-to-speech engines for voice-over, and video processing libraries for final assembly. The codebase follows an MVC plus service-layer pattern — the highlighted areas show the two entry points and the three core directories where backend logic, the web interface, and static resources live.",
+      "description": "MoneyPrinterTurbo automatically generates short videos from a topic or keyword — orchestrating LLMs for scriptwriting, stock footage for visuals, text-to-speech for voice-over, and video processing for final assembly. The highlighted areas show the two entry points and three core directories.",
       "estimatedTime": 60,
       "focusDirectory": "",
       "colorMode": "fileTypes",
@@ -52,7 +52,7 @@
     {
       "id": "step-2-entry-points",
       "title": "Application Entry Points",
-      "description": "The backend server launches on port 8080 via Uvicorn. The highlighted ASGI module wires up CORS, static file serving, and the API router. A separate Streamlit application serves as the alternative entry point, providing a user-friendly web interface for video generation.",
+      "description": "The highlighted modules bootstrap the backend server — wiring up CORS, static file serving, and the API router. A separate Streamlit app serves as the alternative entry point for the web interface.",
       "estimatedTime": 60,
       "focusDirectory": "app",
       "colorMode": "fileTypes",
@@ -80,7 +80,7 @@
     {
       "id": "step-3-services",
       "title": "Services — The Core Engine",
-      "description": "This directory is the heart of the application. Each service handles one stage of the video generation pipeline:\n\n• LLM integration — supports 13+ providers (OpenAI, Gemini, DeepSeek, Ollama, and more) for script and search-term generation\n• Voice synthesis — text-to-speech via Edge TTS, Azure Speech, Gemini TTS, and SiliconFlow\n• Subtitle generation — powered by Faster-Whisper or Edge TTS\n• Material sourcing — stock footage from Pexels and Pixabay\n• Video composition — final assembly with concatenation, subtitles, audio mixing, and transitions\n• Task orchestration — coordinates the full pipeline from script through finished video\n• State persistence — tracks task progress in memory or Redis",
+      "description": "The heart of the application. Each service handles one pipeline stage:\n\n• LLM integration — 13+ providers for script and search-term generation\n• Voice synthesis — text-to-speech via multiple engines\n• Subtitle generation, material sourcing, and video composition\n• Task orchestration — coordinates the full pipeline end to end\n• State persistence — tracks progress in memory or Redis",
       "estimatedTime": 120,
       "focusDirectory": "app/services",
       "colorMode": "fileTypes",
@@ -122,7 +122,7 @@
     {
       "id": "step-4-controllers",
       "title": "Controllers — API Endpoints",
-      "description": "This directory defines the REST API. The highlighted endpoint group handles video generation, task queries, material uploads, and background music management, along with script generation and search-term extraction.\n\nThe task management layer (highlighted separately) provides both in-memory and Redis-backed queues with concurrency control, preventing resource exhaustion under load.",
+      "description": "The REST API layer. The highlighted endpoint group handles video generation, task queries, material uploads, and script generation. The task management layer provides in-memory and Redis-backed queues with concurrency control.",
       "estimatedTime": 90,
       "focusDirectory": "app/controllers",
       "colorMode": "fileTypes",
@@ -159,7 +159,7 @@
     {
       "id": "step-5-models",
       "title": "Models — Data Schemas & Constants",
-      "description": "This directory defines the data structures used throughout the application:\n\n• Schema definitions — Pydantic models for API validation covering video parameters, aspect ratios (16:9, 9:16, 1:1), concatenation and transition modes, material metadata, and request/response contracts\n• Constants — task states, supported file types, and text-processing punctuation\n• Exceptions — custom error classes for HTTP responses and missing files",
+      "description": "Data structures used throughout the application:\n\n• Schemas — Pydantic models for video parameters, aspect ratios, transition modes, and request/response contracts\n• Constants — task states, supported file types, and punctuation rules\n• Exceptions — custom error classes for HTTP responses and missing files",
       "estimatedTime": 60,
       "focusDirectory": "app/models",
       "colorMode": "fileTypes",
@@ -188,7 +188,7 @@
     {
       "id": "step-6-webui",
       "title": "Web UI — Streamlit Interface",
-      "description": "This directory contains a Streamlit-based web application that provides a user-friendly alternative to the REST API. The highlighted entry point is a feature-rich single-page app with form inputs for video parameters, real-time progress tracking, video preview, and an editable configuration panel. The internationalization layer supports 7 languages: Chinese, English, German, Portuguese, Russian, Turkish, and Vietnamese.",
+      "description": "A Streamlit-based web application offering a user-friendly alternative to the REST API. The highlighted entry point includes form inputs, real-time progress tracking, video preview, and an editable config panel. The internationalization layer supports 7 languages.",
       "estimatedTime": 60,
       "focusDirectory": "webui",
       "colorMode": "fileTypes",
@@ -225,7 +225,7 @@
     {
       "id": "step-7-config-and-resources",
       "title": "Configuration & Resources",
-      "description": "Configuration is managed via TOML files. The highlighted template covers LLM provider keys, video source APIs, subtitle settings, Redis, proxy, and UI options. A dedicated config module loads and manages the runtime configuration.\n\nThe static resources directory holds fonts for subtitle rendering and copyright-free background music tracks. Deployment files for Docker and dependency management are also highlighted.",
+      "description": "The highlighted configuration template covers LLM keys, video source APIs, subtitle settings, Redis, and proxy options. Static resources include fonts for subtitles and copyright-free background music. Deployment files for Docker and dependencies are also shown.",
       "estimatedTime": 60,
       "focusDirectory": "",
       "colorMode": "fileTypes",
@@ -275,7 +275,7 @@
     {
       "id": "step-8-complete-picture",
       "title": "The Complete Picture",
-      "description": "You've now seen the full MoneyPrinterTurbo architecture:\n\n1. **Entry Points** — the FastAPI backend and the Streamlit web interface\n2. **Controllers** — REST API endpoints for video generation, scripts, and materials\n3. **Services** — pipeline stages: LLM, materials, voice, subtitles, and video composition\n4. **Models** — Pydantic schemas defining the API contract\n5. **Task Management** — queue-based execution with in-memory or Redis backends\n6. **Web UI** — a full-featured Streamlit app with internationalization\n7. **Config & Resources** — TOML configuration, fonts, and background music\n\nThe video generation pipeline flows: Topic → Script → Search Terms → Stock Footage → Voice-over → Subtitles → Final Video.",
+      "description": "That's the full architecture — entry points, API controllers, pipeline services, data models, task management, web UI, and configuration.\n\nThe generation pipeline flows: Topic → Script → Search Terms → Stock Footage → Voice-over → Subtitles → Final Video.",
       "estimatedTime": 30,
       "focusDirectory": "",
       "colorMode": "fileTypes",
