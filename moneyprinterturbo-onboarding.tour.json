@@ -1,0 +1,295 @@
+{
+  "id": "moneyprinterturbo-onboarding",
+  "title": "MoneyPrinterTurbo Codebase Tour",
+  "description": "A guided walkthrough of the AI-powered short video generation platform — covering architecture, services, API layer, web UI, and configuration",
+  "version": "1.0.0",
+  "audience": "New Developers & AI Assistants",
+  "prerequisites": [
+    "Basic Python and FastAPI knowledge",
+    "Familiarity with video processing concepts"
+  ],
+  "steps": [
+    {
+      "id": "step-1-overview",
+      "title": "Project Overview",
+      "description": "MoneyPrinterTurbo is an AI-powered platform that automatically generates short videos from a topic or keyword. It orchestrates large language models for scriptwriting, stock footage APIs for visuals, text-to-speech engines for voice-over, and video processing libraries for final assembly. The codebase follows an MVC plus service-layer pattern — the highlighted areas show the two entry points and the three core directories where backend logic, the web interface, and static resources live.",
+      "estimatedTime": 60,
+      "focusDirectory": "",
+      "colorMode": "fileTypes",
+      "highlightLayers": [
+        {
+          "id": "entry-points",
+          "name": "Entry Points",
+          "color": "#f59e0b",
+          "items": [
+            { "path": "main.py", "type": "file" },
+            { "path": "webui/Main.py", "type": "file" }
+          ],
+          "opacity": 0.8,
+          "renderStrategy": "fill"
+        },
+        {
+          "id": "core-dirs",
+          "name": "Core Directories",
+          "color": "#3b82f6",
+          "items": [
+            { "path": "app", "type": "directory" },
+            { "path": "webui", "type": "directory" },
+            { "path": "resource", "type": "directory" }
+          ],
+          "opacity": 0.5,
+          "renderStrategy": "border"
+        }
+      ],
+      "interactiveActions": [
+        {
+          "type": "hover-directory",
+          "description": "Hover over the application directory to see where all backend logic lives",
+          "target": "app"
+        }
+      ]
+    },
+    {
+      "id": "step-2-entry-points",
+      "title": "Application Entry Points",
+      "description": "The backend server launches on port 8080 via Uvicorn. The highlighted ASGI module wires up CORS, static file serving, and the API router. A separate Streamlit application serves as the alternative entry point, providing a user-friendly web interface for video generation.",
+      "estimatedTime": 60,
+      "focusDirectory": "app",
+      "colorMode": "fileTypes",
+      "highlightLayers": [
+        {
+          "id": "asgi-layer",
+          "name": "Server Bootstrap",
+          "color": "#8b5cf6",
+          "items": [
+            { "path": "app/asgi.py", "type": "file" },
+            { "path": "app/router.py", "type": "file" }
+          ],
+          "opacity": 0.8,
+          "renderStrategy": "fill"
+        }
+      ],
+      "interactiveActions": [
+        {
+          "type": "click-file",
+          "description": "Click the ASGI module to see how the FastAPI app is configured",
+          "target": "app/asgi.py"
+        }
+      ]
+    },
+    {
+      "id": "step-3-services",
+      "title": "Services — The Core Engine",
+      "description": "This directory is the heart of the application. Each service handles one stage of the video generation pipeline:\n\n• LLM integration — supports 13+ providers (OpenAI, Gemini, DeepSeek, Ollama, and more) for script and search-term generation\n• Voice synthesis — text-to-speech via Edge TTS, Azure Speech, Gemini TTS, and SiliconFlow\n• Subtitle generation — powered by Faster-Whisper or Edge TTS\n• Material sourcing — stock footage from Pexels and Pixabay\n• Video composition — final assembly with concatenation, subtitles, audio mixing, and transitions\n• Task orchestration — coordinates the full pipeline from script through finished video\n• State persistence — tracks task progress in memory or Redis",
+      "estimatedTime": 120,
+      "focusDirectory": "app/services",
+      "colorMode": "fileTypes",
+      "highlightLayers": [
+        {
+          "id": "pipeline-services",
+          "name": "Pipeline Services",
+          "color": "#10b981",
+          "items": [
+            { "path": "app/services/task.py", "type": "file" },
+            { "path": "app/services/llm.py", "type": "file" },
+            { "path": "app/services/voice.py", "type": "file" },
+            { "path": "app/services/material.py", "type": "file" },
+            { "path": "app/services/video.py", "type": "file" }
+          ],
+          "opacity": 0.7,
+          "renderStrategy": "fill"
+        },
+        {
+          "id": "support-services",
+          "name": "Supporting Services",
+          "color": "#6366f1",
+          "items": [
+            { "path": "app/services/subtitle.py", "type": "file" },
+            { "path": "app/services/state.py", "type": "file" }
+          ],
+          "opacity": 0.7,
+          "renderStrategy": "fill"
+        }
+      ],
+      "interactiveActions": [
+        {
+          "type": "click-file",
+          "description": "Click the task orchestrator to see how the full video generation pipeline is coordinated",
+          "target": "app/services/task.py"
+        }
+      ]
+    },
+    {
+      "id": "step-4-controllers",
+      "title": "Controllers — API Endpoints",
+      "description": "This directory defines the REST API. The highlighted endpoint group handles video generation, task queries, material uploads, and background music management, along with script generation and search-term extraction.\n\nThe task management layer (highlighted separately) provides both in-memory and Redis-backed queues with concurrency control, preventing resource exhaustion under load.",
+      "estimatedTime": 90,
+      "focusDirectory": "app/controllers",
+      "colorMode": "fileTypes",
+      "highlightLayers": [
+        {
+          "id": "api-endpoints",
+          "name": "API Endpoints",
+          "color": "#ec4899",
+          "items": [
+            { "path": "app/controllers/v1", "type": "directory" }
+          ],
+          "opacity": 0.7,
+          "renderStrategy": "border"
+        },
+        {
+          "id": "task-management",
+          "name": "Task Management",
+          "color": "#f97316",
+          "items": [
+            { "path": "app/controllers/manager", "type": "directory" }
+          ],
+          "opacity": 0.7,
+          "renderStrategy": "border"
+        }
+      ],
+      "interactiveActions": [
+        {
+          "type": "click-file",
+          "description": "Click the video endpoint module to see the main API routes",
+          "target": "app/controllers/v1/video.py"
+        }
+      ]
+    },
+    {
+      "id": "step-5-models",
+      "title": "Models — Data Schemas & Constants",
+      "description": "This directory defines the data structures used throughout the application:\n\n• Schema definitions — Pydantic models for API validation covering video parameters, aspect ratios (16:9, 9:16, 1:1), concatenation and transition modes, material metadata, and request/response contracts\n• Constants — task states, supported file types, and text-processing punctuation\n• Exceptions — custom error classes for HTTP responses and missing files",
+      "estimatedTime": 60,
+      "focusDirectory": "app/models",
+      "colorMode": "fileTypes",
+      "highlightLayers": [
+        {
+          "id": "models-layer",
+          "name": "Data Models",
+          "color": "#14b8a6",
+          "items": [
+            { "path": "app/models/schema.py", "type": "file" },
+            { "path": "app/models/const.py", "type": "file" },
+            { "path": "app/models/exception.py", "type": "file" }
+          ],
+          "opacity": 0.8,
+          "renderStrategy": "fill"
+        }
+      ],
+      "interactiveActions": [
+        {
+          "type": "click-file",
+          "description": "Click the schema module to see the Pydantic models that define the API contract",
+          "target": "app/models/schema.py"
+        }
+      ]
+    },
+    {
+      "id": "step-6-webui",
+      "title": "Web UI — Streamlit Interface",
+      "description": "This directory contains a Streamlit-based web application that provides a user-friendly alternative to the REST API. The highlighted entry point is a feature-rich single-page app with form inputs for video parameters, real-time progress tracking, video preview, and an editable configuration panel. The internationalization layer supports 7 languages: Chinese, English, German, Portuguese, Russian, Turkish, and Vietnamese.",
+      "estimatedTime": 60,
+      "focusDirectory": "webui",
+      "colorMode": "fileTypes",
+      "highlightLayers": [
+        {
+          "id": "webui-main",
+          "name": "Web UI Entry",
+          "color": "#e11d48",
+          "items": [
+            { "path": "webui/Main.py", "type": "file" }
+          ],
+          "opacity": 0.8,
+          "renderStrategy": "fill"
+        },
+        {
+          "id": "webui-i18n",
+          "name": "Internationalization",
+          "color": "#0ea5e9",
+          "items": [
+            { "path": "webui/i18n", "type": "directory" }
+          ],
+          "opacity": 0.6,
+          "renderStrategy": "border"
+        }
+      ],
+      "interactiveActions": [
+        {
+          "type": "click-file",
+          "description": "Click the web UI entry point to explore the Streamlit interface",
+          "target": "webui/Main.py"
+        }
+      ]
+    },
+    {
+      "id": "step-7-config-and-resources",
+      "title": "Configuration & Resources",
+      "description": "Configuration is managed via TOML files. The highlighted template covers LLM provider keys, video source APIs, subtitle settings, Redis, proxy, and UI options. A dedicated config module loads and manages the runtime configuration.\n\nThe static resources directory holds fonts for subtitle rendering and copyright-free background music tracks. Deployment files for Docker and dependency management are also highlighted.",
+      "estimatedTime": 60,
+      "focusDirectory": "",
+      "colorMode": "fileTypes",
+      "highlightLayers": [
+        {
+          "id": "config-files",
+          "name": "Configuration",
+          "color": "#d946ef",
+          "items": [
+            { "path": "config.example.toml", "type": "file" },
+            { "path": "app/config", "type": "directory" }
+          ],
+          "opacity": 0.7,
+          "renderStrategy": "fill"
+        },
+        {
+          "id": "resources",
+          "name": "Static Resources",
+          "color": "#84cc16",
+          "items": [
+            { "path": "resource", "type": "directory" }
+          ],
+          "opacity": 0.6,
+          "renderStrategy": "border"
+        },
+        {
+          "id": "deployment",
+          "name": "Deployment",
+          "color": "#06b6d4",
+          "items": [
+            { "path": "Dockerfile", "type": "file" },
+            { "path": "docker-compose.yml", "type": "file" },
+            { "path": "requirements.txt", "type": "file" }
+          ],
+          "opacity": 0.7,
+          "renderStrategy": "fill"
+        }
+      ],
+      "interactiveActions": [
+        {
+          "type": "click-file",
+          "description": "Click the configuration template to see all available options",
+          "target": "config.example.toml"
+        }
+      ]
+    },
+    {
+      "id": "step-8-complete-picture",
+      "title": "The Complete Picture",
+      "description": "You've now seen the full MoneyPrinterTurbo architecture:\n\n1. **Entry Points** — the FastAPI backend and the Streamlit web interface\n2. **Controllers** — REST API endpoints for video generation, scripts, and materials\n3. **Services** — pipeline stages: LLM, materials, voice, subtitles, and video composition\n4. **Models** — Pydantic schemas defining the API contract\n5. **Task Management** — queue-based execution with in-memory or Redis backends\n6. **Web UI** — a full-featured Streamlit app with internationalization\n7. **Config & Resources** — TOML configuration, fonts, and background music\n\nThe video generation pipeline flows: Topic → Script → Search Terms → Stock Footage → Voice-over → Subtitles → Final Video.",
+      "estimatedTime": 30,
+      "focusDirectory": "",
+      "colorMode": "fileTypes",
+      "interactiveActions": [
+        {
+          "type": "explore",
+          "description": "Explore the codebase freely — click on any building to view its source"
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "author": "Claude",
+    "createdAt": "2026-03-22",
+    "tags": ["onboarding", "architecture", "python", "fastapi", "video-generation"]
+  }
+}
